@@ -1,0 +1,18 @@
+# clangd only: drop gcc/xtensa-only flags it doesn't understand. Doesn't affect the real build.
+CompileFlags:
+  Remove:
+    # toolchain headers come from clangd --query-driver (set in VS Code user settings)
+    - -I/home/shawnion/.platformio/packages/toolchain-*
+    - -mlongcalls
+    - -mdisable-hardware-atomics
+    - -mfix-esp32-psram-cache-issue
+    - -mfix-esp32-psram-cache-strategy=*
+    - -fstrict-volatile-bitfields
+    - -fno-tree-switch-conversion
+    - -freorder-blocks
+    - -fipa-pta
+    - -fno-shrink-wrap
+    - -mtext-section-literals
+  Add:
+    # clang 23 builtin limits.h expects this glibc macro; the ESP toolchain libc never defines it
+    - -D__GLIBC_USE(x)=0
